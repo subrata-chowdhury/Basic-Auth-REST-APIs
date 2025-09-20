@@ -6,7 +6,7 @@ export const register = async (req, res) => {
     const { username, email, password } = req.body;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const nameRegex = /^[a-zA-Z\s]+$/;
+    const nameRegex = /^[a-zA-Z0-9]+$/;
     if (!emailRegex.test(email.trim())) {
         return res.status(400).json({ message: 'Invalid email format' });
     }
@@ -39,7 +39,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     const { username, password } = req.body;
 
-    const nameRegex = /^[a-zA-Z\s]+$/;
+    const nameRegex = /^[a-zA-Z0-9]+$/;
     if (!nameRegex.test(username.trim())) {
         return res.status(400).json({ message: 'Invalid username format' });
     }
@@ -60,7 +60,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
         const token = jwt.sign({ userId: user.ID }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ message: "Login Successfull",token });
+        res.json({ message: "Login Successfull", token });
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Server error' });
@@ -70,7 +70,7 @@ export const login = async (req, res) => {
 export const generateOtp = async (req, res) => {
     const { username } = req.body;
 
-    const nameRegex = /^[a-zA-Z\s]+$/;
+    const nameRegex = /^[a-zA-Z0-9]+$/;
     if (!nameRegex.test(username.trim())) {
         return res.status(400).json({ message: 'Invalid username format' });
     }
@@ -85,7 +85,7 @@ export const generateOtp = async (req, res) => {
         }
 
         let otp = '';
-        for(let i =0;i<6;i++){
+        for (let i = 0; i < 6; i++) {
             otp += Math.floor(Math.random() * 10);
         }
         const isGenerated = generateOtpForUser(user.ID, otp);
@@ -102,8 +102,8 @@ export const generateOtp = async (req, res) => {
 
 export const checkOtp = async (req, res) => {
     const { username, otp } = req.body;
-    
-    const nameRegex = /^[a-zA-Z\s]+$/;
+
+    const nameRegex = /^[a-zA-Z0-9]+$/;
     if (!nameRegex.test(username.trim())) {
         return res.status(400).json({ message: 'Invalid username format' });
     }
@@ -131,8 +131,8 @@ export const checkOtp = async (req, res) => {
 
 export const checkOtpAndResetPass = async (req, res) => {
     const { username, otp, password } = req.body;
-    
-    const nameRegex = /^[a-zA-Z\s]+$/;
+
+    const nameRegex = /^[a-zA-Z0-9]+$/;
     if (!nameRegex.test(username.trim())) {
         return res.status(400).json({ message: 'Invalid username format' });
     }
@@ -156,7 +156,7 @@ export const checkOtpAndResetPass = async (req, res) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const updatedRows = updateUserPass(hashedPassword, user.ID)
-        if(updatedRows === 0) return res.json({ message: "Something Went Wrong" });
+        if (updatedRows === 0) return res.json({ message: "Something Went Wrong" });
         res.json({ message: "Password reset successfully" });
     } catch (error) {
         console.log(error)

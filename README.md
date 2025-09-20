@@ -1,5 +1,7 @@
 ## Basic Auth APIs Documentation
 
+Postman: https://jtjtu6.postman.co/workspace/My-Workspace~71c1e923-b590-49f9-8e6c-b6e2b410cbdc/request/39044982-977b497a-f976-45f8-858d-3d31e4b56f94?action=share&creator=39044982&ctx=documentation  
+
 ### POST /api/auth/register
 Registers a new user.
 
@@ -69,3 +71,4 @@ Retrieves the OTP for a user (for testing purposes only).
 
 **Response:**
 - Returns the OTP for the specified user.
+
